@@ -29,5 +29,3 @@ jobs:
         name: filmapp-artifact
         path: target/*.jar
         
-- name: Skip Super-Linter
-  run: echo "Skipping Super-Linter step intentionally."
