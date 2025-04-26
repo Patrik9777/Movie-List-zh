@@ -28,25 +28,30 @@ jobs:
         distribution: 'temurin'
         
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -B package --file pom.xml -X
 
     - name: Run tests with coverage
-      run: mvn test jacoco:report
+      run: mvn test jacoco:report -X
 
     - name: Verify coverage
       run: mvn jacoco:check
+      
+    - name: List Generated Files
+      run: ls -la target && ls -la target/site && ls -la target/site/jacoco || echo "Jacoco directory not found"
 
     - name: Upload coverage report
-      uses: actions/upload-artifact@v3.1.2
+      uses: actions/upload-artifact@v3
       with:
         name: coverage-report
         path: target/site/jacoco/
+        if-no-files-found: warn
         
     - name: Upload JAR artifact
-      uses: actions/upload-artifact@v3.1.2
+      uses: actions/upload-artifact@v3
       with:
         name: MovieList
         path: target/*.jar
+        if-no-files-found: warn
         
     - name: Set up JFrog CLI
       uses: jfrog/setup-jfrog-cli@v3
