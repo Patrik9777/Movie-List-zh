@@ -39,35 +39,41 @@ jobs:
     - name: List Generated Files
       run: ls -la target && ls -la target/site && ls -la target/site/jacoco || echo "Jacoco directory not found"
 
-    - name: Upload coverage report
-      uses: actions/upload-artifact@v3.1.0
-      with:
-        name: coverage-report
-        path: target/site/jacoco/
-        if-no-files-found: warn
+    # Ideiglenesen kikommentezve az artifact feltöltési lépések
+    # - name: Upload coverage report
+    #   uses: actions/upload-artifact@d4c0403c3afd4e376e6a5c2a18272e29214626ad
+    #   with:
+    #     name: coverage-report
+    #     path: target/site/jacoco/
+    #     if-no-files-found: warn
         
-    - name: Upload JAR artifact
-      uses: actions/upload-artifact@v3.1.0
-      with:
-        name: MovieList
-        path: target/*.jar
-        if-no-files-found: warn
+    # - name: Upload JAR artifact
+    #   uses: actions/upload-artifact@d4c0403c3afd4e376e6a5c2a18272e29214626ad
+    #   with:
+    #     name: MovieList
+    #     path: target/*.jar
+    #     if-no-files-found: warn
         
-    - name: Set up JFrog CLI
-      uses: jfrog/setup-jfrog-cli@v3
-      with:
-        version: 2.16.1
-      
-    - name: Configure JFrog CLI
-      env:
-        ARTIFACTORY_URL: "https://artifactory.example.com/artifactory"
-        ARTIFACTORY_USER: ${{ github.actor }}
-        ARTIFACTORY_PASSWORD: ${{ github.token }}
-      run: |
-        jf config add --url="${ARTIFACTORY_URL}" --user="${ARTIFACTORY_USER}" --password="${ARTIFACTORY_PASSWORD}" --interactive=false
-      
-    - name: Deploy artifact to Artifactory
-      run: |
-        # Artifactory feltöltés JFrog CLI-val
-        jf rt upload "target/*.jar" "libs-snapshot-local/com/movielist/" --build-name=movielist --build-number=${{ github.run_number }}
-        jf rt build-publish movielist ${{ github.run_number }}
+    # Ideiglenesen kikommentezve az Artifactory feltöltési lépések
+    # - name: Set up JFrog CLI
+    #   uses: jfrog/setup-jfrog-cli@v3
+    #   with:
+    #     version: 2.16.1
+    #   
+    # - name: Configure JFrog CLI
+    #   env:
+    #     ARTIFACTORY_URL: "https://artifactory.example.com/artifactory"
+    #     ARTIFACTORY_USER: ${{ github.actor }}
+    #     ARTIFACTORY_PASSWORD: ${{ github.token }}
+    #   run: |
+    #     jf config add --url="${ARTIFACTORY_URL}" --user="${ARTIFACTORY_USER}" --password="${ARTIFACTORY_PASSWORD}" --interactive=false
+    #   
+    # - name: Deploy artifact to Artifactory
+    #   run: |
+    #     # Artifactory feltöltés JFrog CLI-val
+    #     jf rt upload "target/*.jar" "libs-snapshot-local/com/movielist/" --build-name=movielist --build-number=${{ github.run_number }}
+    #     jf rt build-publish movielist ${{ github.run_number }}
+    
+    # Sikeres build jelzése
+    - name: Build Success
+      run: echo "Build and tests completed successfully!"
