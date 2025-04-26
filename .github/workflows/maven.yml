@@ -1,0 +1,62 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ zh ]
+  pull_request:
+    branches: [ zh ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Cache Maven packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+
+    - name: Run tests with coverage
+      run: mvn test jacoco:report
+
+    - name: Verify coverage
+      run: mvn jacoco:check
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-report
+        path: target/site/jacoco/
+        
+    - name: Set up JFrog CLI
+      uses: jfrog/setup-jfrog-cli@v3
+      with:
+        version: 2.16.1
+      
+    - name: Configure JFrog CLI
+      env:
+        ARTIFACTORY_URL: "https://artifactory.example.com/artifactory"
+        ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USERNAME }}
+        ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+      run: |
+        jf config add --url="${ARTIFACTORY_URL}" --user="${ARTIFACTORY_USER}" --password="${ARTIFACTORY_PASSWORD}" --interactive=false
+      
+    - name: Deploy artifact to Artifactory
+      run: |
+        # Artifactory feltöltés JFrog CLI-val
+        jf rt upload "target/*.jar" "libs-snapshot-local/com/movielist/" --build-name=movielist --build-number=${{ github.run_number }}
+        jf rt build-publish movielist ${{ github.run_number }}
