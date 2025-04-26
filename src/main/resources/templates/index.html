@@ -209,16 +209,20 @@
                     <input type="text" th:field="*{rendezo}" class="form-control" placeholder="Rendező" required>
                 </div>
                 <div class="col-md-4">
-                    <input type="number" th:field="*{ev}" class="form-control" placeholder="Év" required>
+                    <label for="ev" class="form-label">Megjelenés éve</label>
+                    <input type="number" name="ev" id="ev" class="form-control" placeholder="pl. 2023" required>
                 </div>
                 <div class="col-md-4">
-                    <input type="number" th:field="*{hossz}" class="form-control" placeholder="Hossz (perc)" required>
+                    <label for="hossz" class="form-label">Film hossza (percben)</label>
+                    <input type="number" name="hossz" id="hossz" class="form-control" placeholder="pl. 120" required>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" th:field="*{kategoria}" class="form-control" placeholder="Kategória" required>
+                    <label for="kategoria" class="form-label">Film kategóriája</label>
+                    <input type="text" th:field="*{kategoria}" class="form-control" placeholder="pl. Akció, Vígjáték" required>
                 </div>
                 <div class="col-md-4">
-                    <input type="number" step="0.1" th:field="*{ertekeles}" class="form-control" placeholder="Értékelés (0-10)" required>
+                    <label for="ertekeles" class="form-label">Értékelés (0-10 skálán)</label>
+                    <input type="number" step="0.1" name="ertekeles" id="ertekeles" class="form-control" placeholder="pl. 8.5" required>
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-success"><i class="fas fa-plus me-1"></i>Hozzáadás</button>
