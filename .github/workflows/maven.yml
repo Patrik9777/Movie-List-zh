@@ -37,13 +37,13 @@ jobs:
       run: mvn jacoco:check
 
     - name: Upload coverage report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: coverage-report
         path: target/site/jacoco/
         
     - name: Upload JAR artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: MovieList
         path: target/*.jar
