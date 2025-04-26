@@ -37,10 +37,16 @@ jobs:
       run: mvn jacoco:check
 
     - name: Upload coverage report
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: coverage-report
         path: target/site/jacoco/
+        
+    - name: Upload JAR artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: MovieList
+        path: target/*.jar
         
     - name: Set up JFrog CLI
       uses: jfrog/setup-jfrog-cli@v3
@@ -50,8 +56,8 @@ jobs:
     - name: Configure JFrog CLI
       env:
         ARTIFACTORY_URL: "https://artifactory.example.com/artifactory"
-        ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USERNAME }}
-        ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+        ARTIFACTORY_USER: ${{ github.actor }}
+        ARTIFACTORY_PASSWORD: ${{ github.token }}
       run: |
         jf config add --url="${ARTIFACTORY_URL}" --user="${ARTIFACTORY_USER}" --password="${ARTIFACTORY_PASSWORD}" --interactive=false
       
