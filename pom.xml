@@ -26,11 +26,13 @@
         <repository>
             <id>artifactory</id>
             <name>Artifactory Repository</name>
+            <!--suppress UnresolvedMavenProperty -->
             <url>${env.ARTIFACTORY_URL}/libs-release-local</url>
         </repository>
         <snapshotRepository>
             <id>artifactory</id>
             <name>Artifactory Repository</name>
+            <!--suppress UnresolvedMavenProperty -->
             <url>${env.ARTIFACTORY_URL}/libs-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>

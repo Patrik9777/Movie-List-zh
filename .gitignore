@@ -36,3 +36,8 @@ build/
 *.log
 *.gz
 /logs/
+
+### Database files ###
+*.mv.db
+*.trace.db
+moviedb.*
